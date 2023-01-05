@@ -1,3 +1,7 @@
+// setInterval(changeBackground, 3000){
+
+// }
+
 function findValidPicture(randomNum){
     fetch(`https://api.artic.edu/api/v1/artworks/${randomNum}`)
         .then((response) => {
@@ -33,12 +37,18 @@ function getRandomAdvice(){
 function randomize(){
     getRandomPhoto()
     getRandomAdvice()
+    getRandomBackground()
 }
 function getRandomPhoto(){
     var randomNum = Math.floor(Math.random() * 10000)
     findValidPicture(randomNum)
 }
-
+function getRandomBackground(){
+    var randomNum = Math.floor(Math.random() * 24)
+    const body = document.querySelector('body')
+    body.style.backgroundImage = `url('${wallPaperPaths[randomNum]}')`
+    body.style.backgroundSize = 'cover'
+}
 function query(){
     const temp = document.getElementById('query')
     if(temp.value !== ""){
@@ -71,6 +81,7 @@ function getQueryPhoto(query){
         .then((response) => response.json())
         .then((data) => {
             if(data.data.length > 0){
+                // for(let i = 0; i < data.data.length; i++){}
                 var pickOne = Math.floor(Math.random() * data.data.length)
                 getPhotoByID(data.data[pickOne].id)
                 console.log("successful photo query")
@@ -99,3 +110,23 @@ function getPhotoByID(id){
             console.log(data)
         })
 }
+wallPaperPaths = []
+// fetch("https://wallhaven.cc/api/v1/w/48629j?apikey=5cbRi11kd0vHgb2tXUBMpSOob7IK22Eh", {
+    fetch("http://127.0.0.1:3000/wallpaper", {
+//   body: JSON.stringify({
+//     model: "default"
+//   }),
+//   headers: {
+//     "Content-Type": "application/json"
+//   },
+//   method: "POST"
+})
+    .then((response) => response.json())
+    .then((data) => {
+        for(let i = 0; i < 24; i++){
+            wallPaperPaths.push(data.data[i].path)
+        }
+        // var body = document.querySelector('body')
+        // body.style.backgroundImage = `url('${data.data[0].path}')`
+        // console.log(data)
+    })

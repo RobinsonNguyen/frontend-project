@@ -1,0 +1,17 @@
+img {
+    opacity: 0.5;
+}
+img:hover {
+    opacity: 1.0;
+}
+.textBackground {
+    display:inline-block;
+    color:white;
+    background-color: black;
+    opacity: 0.5;
+}
+.textBackground:hover {
+    color:white;
+    background-color: black;
+    opacity: 1.0;
+}
