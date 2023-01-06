@@ -5,7 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <script src="flickity.pkgd.min.js"></script>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="flickity.css" media="screen">
     <title>Document</title>
 </head>
 <body>
@@ -13,15 +16,20 @@
     <input type="text" id="query">
     <button id="submit" onclick="query()">Submit Query</button>
     <div>
-        <div class="textBackground">
+        <div class="text-background">
             <p id="advice" class="test">hello world</p>
         </div>
     </div>
-    <img id="photo" src="">
-    <div>
-        <div class="textBackground">
-            <p id="art-title">hello again</p>
+    <div id="art-gallery">
+        <div id="art-panel">
+            <img id="photo" src="">
+            <div>
+                <div class="text-background">
+                    <p id="art-title">hello again</p>
+                </div>
+            </div> 
         </div>
-    </div>  
+    </div>
+    
 </body>
 </html>

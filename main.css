@@ -1,17 +1,54 @@
 img {
     opacity: 0.5;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
 }
 img:hover {
     opacity: 1.0;
 }
-.textBackground {
-    display:inline-block;
+.text-background {
+    /* display:inline-block; */
     color:white;
     background-color: black;
     opacity: 0.5;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
 }
-.textBackground:hover {
+.text-background:hover {
     color:white;
     background-color: black;
-    opacity: 1.0;
+    opacity: 100%;
 }
+/* #art-gallery {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+    align-items: bottom;
+    justify-items: center;
+} */
+#art-gallery {
+    width: 800px;
+    /* background-color: #2FF3E0; */
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 20px;
+    padding: 20px;
+  }
+  #art-panel {
+    width: 700px;
+    background-color: wheat;
+    opacity: 0.5;
+    color: black;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 10px;
+    display: inline-block;
+  }
+  #art-panel:hover{
+    opacity: 1.0;
+
+  }

@@ -1,7 +1,14 @@
-// setInterval(changeBackground, 3000){
-
-// }
-
+wallPaperPaths = []
+    fetch("http://127.0.0.1:3000/wallpaper")
+    .then((response) => response.json())
+    .then((data) => {
+        for(let i = 0; i < 24; i++){
+            wallPaperPaths.push(data.data[i].path)
+        }
+    })
+var artGallery = document.getElementById("art-gallery");
+// var flkty = new Flickity(artGallery)
+var isFlickity = true;
 function findValidPicture(randomNum){
     fetch(`https://api.artic.edu/api/v1/artworks/${randomNum}`)
         .then((response) => {
@@ -13,7 +20,31 @@ function findValidPicture(randomNum){
             throw new Error("not valid")
         })
         .then((data) => {
-            getPhotoByID(data.data.id)
+            console.log(data)
+            // getPhotoByID(data.data.id,flkty)
+            // document.getElementById("art-gallery").replaceChildren()
+            // addImgElements(data)
+            var artGallery = document.getElementById("art-gallery");
+            var artPanel = document.createElement('div')
+            artPanel.id = "art-panel";
+            const photo = document.createElement("img");
+            photo.id = "photo";
+            photo.setAttribute('src', `https://www.artic.edu/iiif/2/${data.data.image_id}/full/843,/0/default.jpg`)
+            // photo.setAttribute('width', '400px')
+            artPanel.append(photo)
+
+            // removing = document.getElementById("art-title");
+            var textBackground = document.createElement('div')
+            textBackground.className = "text-background";
+            const title = document.createElement("p");
+            title.id = "art-title"
+            title.textContent = `${data.data.title} by ${data.data.artist_display}`;
+            textBackground.append(title)
+            artPanel.append(textBackground)
+            // removing.replaceWith(title)
+            // console.log(data)
+            artGallery.append(artPanel)
+            
         }).catch((error) =>{
             // console.log(error)
             randomNum = Math.floor(Math.random() * 10000)
@@ -35,6 +66,8 @@ function getRandomAdvice(){
 }
 
 function randomize(){
+    var artGallery = document.getElementById("art-gallery");
+    artGallery.replaceChildren()
     getRandomPhoto()
     getRandomAdvice()
     getRandomBackground()
@@ -54,6 +87,7 @@ function query(){
     if(temp.value !== ""){
         getQueryAdvice(temp.value);
         getQueryPhoto(temp.value);
+        getRandomBackground()
     } 
 }
 
@@ -75,58 +109,53 @@ function getQueryAdvice(query){
         }
     })
 }
-
-function getQueryPhoto(query){
+// var flkty = new Flickity(artGallery);
+function getQueryPhoto(query,flkty){
     fetch(`https://api.artic.edu/api/v1/artworks/search?q=${query}`)
         .then((response) => response.json())
         .then((data) => {
+            var flkty = Flickity.data(artGallery)
+            if(flkty !== undefined){
+                flkty.destroy()
+            }
             if(data.data.length > 0){
-                // for(let i = 0; i < data.data.length; i++){}
-                var pickOne = Math.floor(Math.random() * data.data.length)
-                getPhotoByID(data.data[pickOne].id)
-                console.log("successful photo query")
-                // console.log(data)
+                artGallery.replaceChildren()
+                flkty = new Flickity(artGallery)
+                for(let i = 0; i < data.data.length; i++){
+                    getPhotoByID(data.data[i].id,flkty)
+                }
             }else{
+                artGallery.replaceChildren()
                 getRandomPhoto()
             }
         })
 }
 
-function getPhotoByID(id){
+function getPhotoByID(id,flkty){
     fetch(`https://api.artic.edu/api/v1/artworks/${id}`)
         .then((response) => response.json())
         .then((data) => {
-            var removing = document.getElementById("photo");
-            const photo = document.createElement("img");
-            photo.id = "photo";
-            photo.setAttribute('src', `https://www.artic.edu/iiif/2/${data.data.image_id}/full/843,/0/default.jpg`)
-            removing.replaceWith(photo)
-
-            removing = document.getElementById("art-title");
-            const title = document.createElement("p");
-            title.id = "art-title"
-            title.textContent = `${data.data.title} by ${data.data.artist_display}`;
-            removing.replaceWith(title)
-            console.log(data)
+            addImgElements(data,flkty)
         })
 }
-wallPaperPaths = []
-// fetch("https://wallhaven.cc/api/v1/w/48629j?apikey=5cbRi11kd0vHgb2tXUBMpSOob7IK22Eh", {
-    fetch("http://127.0.0.1:3000/wallpaper", {
-//   body: JSON.stringify({
-//     model: "default"
-//   }),
-//   headers: {
-//     "Content-Type": "application/json"
-//   },
-//   method: "POST"
-})
-    .then((response) => response.json())
-    .then((data) => {
-        for(let i = 0; i < 24; i++){
-            wallPaperPaths.push(data.data[i].path)
-        }
-        // var body = document.querySelector('body')
-        // body.style.backgroundImage = `url('${data.data[0].path}')`
-        // console.log(data)
-    })
+async function addImgElements(data,flkty){
+    var artGallery = document.getElementById("art-gallery");
+    var artPanel = document.createElement('div')
+    artPanel.id = "art-panel";
+    const photo = document.createElement("img");
+    photo.id = "photo";
+    photo.setAttribute('src', `https://www.artic.edu/iiif/2/${data.data.image_id}/full/843,/0/default.jpg`)
+    artPanel.append(photo)
+
+    var textBackground = document.createElement('div')
+    textBackground.className = "text-background";
+    const title = document.createElement("p");
+    title.id = "art-title"
+    title.textContent = `${data.data.title} by ${data.data.artist_display}`;
+    textBackground.append(title)
+    artPanel.append(textBackground)
+
+    artGallery.append(artPanel)
+    // console.log(artPanel)
+    flkty.append(artPanel)
+}
